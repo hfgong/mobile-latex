@@ -2,24 +2,32 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <!-- 
+      Mobile-first Viewport configuration:
+      - viewport-fit=cover: Ensures full-bleed rendering behind iPhone notches and home indicators.
+      - maximum-scale=5.0: Allows accessibility zooming up to 500% to inspect small math scripts.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
     <title>Mobile LaTeX - Mobile LaTeX Editor for AI Math Chat</title>
     
-    <!-- Mobile Web App Meta -->
+    <!-- PWA & Mobile Web App Standalone Meta Tags (iOS Safari & Android Chrome) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
     <meta name="description" content="A mobile-first LaTeX equation composer and AI math chat companion. Fits naturally on phones.">
     
-    <!-- Favicon (SVG) -->
+    <!-- Favicon (Inline SVG for zero external asset dependency) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>">
 
-    <!-- KaTeX CSS & JS (CDN) -->
+    <!-- KaTeX CSS & JS Library (Loaded via fast jsDelivr CDN) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
 
     <style>
+        /* ==========================================================================
+           1. CSS Design Tokens & Theme Variables (Light / Dark Mode)
+           ========================================================================== */
         :root {
             --bg-color: #f8fafc;
             --surface-color: #ffffff;
@@ -46,6 +54,7 @@
             --preview-font-size: 1.35rem;
         }
 
+        /* Dark mode palette overrides */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-color: #090d16;
@@ -68,11 +77,14 @@
             .katex { color: var(--text-primary); }
         }
 
+        /* ==========================================================================
+           2. Global Reset & Mobile Layout Scaffolding
+           ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: transparent; /* Remove blue highlight on touch */
         }
 
         html, body {
@@ -84,16 +96,19 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
-            min-height: 100dvh;
+            min-height: 100dvh; /* Dynamic viewport height accounting for mobile keyboard/bars */
             display: flex;
             flex-direction: column;
+            /* Safe area padding for iPhone notch, dynamic island, and home bar */
             padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px) env(safe-area-inset-bottom, 10px) env(safe-area-inset-left, 10px);
             max-width: 680px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* 顶部导航与语言切换 */
+        /* ==========================================================================
+           3. Top Navigation & Language Switcher
+           ========================================================================== */
         header {
             display: flex;
             justify-content: space-between;
@@ -138,7 +153,9 @@
             background: var(--surface-active);
         }
 
-        /* 快捷模板栏 */
+        /* ==========================================================================
+           4. Quick Preset Templates Bar (Horizontal Scroll)
+           ========================================================================== */
         .template-section {
             margin-bottom: 8px;
         }
@@ -175,7 +192,9 @@
             background: var(--primary-light);
         }
 
-        /* 预览卡片 */
+        /* ==========================================================================
+           5. Live Formula Preview Box with Zoom Controls
+           ========================================================================== */
         .preview-card {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -253,7 +272,7 @@
             font-style: italic;
         }
 
-        /* 错误浮条 */
+        /* Error notification banner */
         #error-banner {
             display: none;
             background: var(--danger-light);
@@ -267,7 +286,9 @@
             line-height: 1.4;
         }
 
-        /* 移动端专属虚拟键盘与工具箱 */
+        /* ==========================================================================
+           6. Virtual Math Keypad & Touch-Optimized Symbol Grid
+           ========================================================================== */
         .keyboard-wrapper {
             background: var(--surface-color);
             border: 1px solid var(--border-color);
@@ -277,7 +298,7 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* 分类切换 Tab */
+        /* Category tabs */
         .tab-bar {
             display: flex;
             gap: 4px;
@@ -307,7 +328,7 @@
             color: var(--primary-text);
         }
 
-        /* 符号网格 */
+        /* Keypad grid with narrower condensed font */
         .symbol-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
@@ -347,7 +368,7 @@
             border-color: var(--primary-color);
         }
 
-        /* 光标移动与编辑控制条 */
+        /* Cursor helper bar (resolves mobile text cursor positioning difficulty) */
         .cursor-bar {
             display: flex;
             gap: 6px;
@@ -381,7 +402,9 @@
             color: var(--danger-color);
         }
 
-        /* LaTeX 输入框 */
+        /* ==========================================================================
+           7. LaTeX Code Editor Area
+           ========================================================================== */
         .editor-container {
             flex: 1;
             display: flex;
@@ -413,7 +436,9 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
 
-        /* 底部操作与 AI 助手栏 */
+        /* ==========================================================================
+           8. AI Prompt Bar & Main Actions
+           ========================================================================== */
         .ai-actions-drawer {
             display: flex;
             gap: 6px;
@@ -490,7 +515,9 @@
             border: 1px solid var(--border-color);
         }
 
-        /* 历史记录抽屉 Modal */
+        /* ==========================================================================
+           9. History Modal & Floating Toast Notification
+           ========================================================================== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -578,7 +605,7 @@
             border-color: var(--primary-color);
         }
 
-        /* 浮动 Toast */
+        /* Floating Toast */
         #toast {
             position: fixed;
             bottom: 24px;
@@ -607,17 +634,19 @@
 </head>
 <body>
 
-    <!-- 顶部导航 -->
+    <!-- Top Navigation Header -->
     <header>
         <div class="brand">
             <span>📐</span>
             <span id="app-title">Mobile LaTeX</span>
         </div>
         <div class="header-actions">
+            <!-- Language Toggle Button (EN / 中文) -->
             <button class="btn-top" id="lang-btn" aria-label="Toggle Language">
                 <span>🌐</span>
                 <span id="lang-label">中文</span>
             </button>
+            <!-- History Drawer Trigger Button -->
             <button class="btn-top" id="open-history-btn" aria-label="History">
                 <span>🕒</span>
                 <span id="history-label" data-i18n="history">历史</span>
@@ -625,21 +654,21 @@
         </div>
     </header>
 
-    <!-- 经典模板栏 -->
+    <!-- Formula Templates Bar (Horizontal Scrollable) -->
     <div class="template-section">
         <div class="template-scroll" id="template-bar">
-            <!-- 动态生成模板药丸 -->
+            <!-- Populated dynamically based on selected language -->
         </div>
     </div>
 
-    <!-- 实时渲染预览区 -->
+    <!-- Live KaTeX Preview Section -->
     <div class="preview-card" id="preview-card">
         <div class="preview-header">
             <span data-i18n="preview_title">实时预览</span>
             <div class="preview-controls">
-                <button class="btn-zoom" id="zoom-out" title="缩小">−</button>
-                <button class="btn-zoom" id="zoom-reset" title="重置">1x</button>
-                <button class="btn-zoom" id="zoom-in" title="放大">+</button>
+                <button class="btn-zoom" id="zoom-out" title="Zoom Out">−</button>
+                <button class="btn-zoom" id="zoom-reset" title="Reset Zoom">1x</button>
+                <button class="btn-zoom" id="zoom-in" title="Zoom In">+</button>
             </div>
         </div>
         <div class="preview-body">
@@ -649,12 +678,12 @@
         </div>
     </div>
 
-    <!-- 语法错误提示 -->
+    <!-- KaTeX Syntax Error Banner -->
     <div id="error-banner"></div>
 
-    <!-- 移动端专属虚拟数学键盘 -->
+    <!-- Virtual Mathematical Keypad & Cursor Controllers -->
     <div class="keyboard-wrapper">
-        <!-- 分类切换 Tabs -->
+        <!-- Category Navigation Tabs -->
         <div class="tab-bar" id="category-tabs">
             <button class="tab-btn active" data-cat="common" data-i18n="tab_common">常用</button>
             <button class="tab-btn" data-cat="calculus" data-i18n="tab_calculus">微积分/代数</button>
@@ -663,23 +692,23 @@
             <button class="tab-btn" data-cat="matrix" data-i18n="tab_matrix">括号/矩阵</button>
         </div>
 
-        <!-- 符号键位网格 -->
+        <!-- Symbol Grid Buttons (Narrow Font Stack) -->
         <div class="symbol-grid" id="symbol-grid">
-            <!-- 动态填充 -->
+            <!-- Populated dynamically based on active category tab -->
         </div>
 
-        <!-- 辅助光标控制条 (极大缓解手机编辑光标定位困难) -->
+        <!-- Touch Cursor Helper Controls -->
         <div class="cursor-bar">
-            <button class="cursor-btn" id="btn-cursor-left">◀</button>
-            <button class="cursor-btn" id="btn-cursor-right">▶</button>
+            <button class="cursor-btn" id="btn-cursor-left" title="Move Left">◀</button>
+            <button class="cursor-btn" id="btn-cursor-right" title="Move Right">▶</button>
             <button class="cursor-btn" id="btn-insert-space" data-i18n="key_space">空格</button>
             <button class="cursor-btn" id="btn-insert-quad">\quad</button>
             <button class="cursor-btn" id="btn-undo" title="Undo">↶</button>
-            <button class="cursor-btn danger" id="btn-backspace">⌫</button>
+            <button class="cursor-btn danger" id="btn-backspace" title="Backspace">⌫</button>
         </div>
     </div>
 
-    <!-- LaTeX 源代码输入框 -->
+    <!-- LaTeX Code Editor Textarea -->
     <div class="editor-container">
         <textarea id="latex-input" 
                   placeholder="在此输入 LaTeX 公式代码..." 
@@ -689,14 +718,14 @@
                   spellcheck="false"></textarea>
     </div>
 
-    <!-- AI 快捷提问词条 (专为 AI 数学问答设计) -->
+    <!-- AI Math Chat Prompt Helpers (1-Click Package & Copy) -->
     <div class="ai-actions-drawer" id="ai-actions-bar">
-        <!-- 动态生成 AI Prompt 快捷复制 -->
+        <!-- Populated dynamically based on active language -->
     </div>
 
-    <!-- 底部主操作按钮 -->
+    <!-- Primary Action Controls -->
     <div class="primary-actions">
-        <button class="btn-action btn-danger" id="btn-clear" title="清空">🗑</button>
+        <button class="btn-action btn-danger" id="btn-clear" title="Clear">🗑</button>
         <button class="btn-action btn-secondary" id="btn-copy-md" data-i18n="btn_copy_md">
             复制 $$...$$
         </button>
@@ -709,7 +738,7 @@
         </button>
     </div>
 
-    <!-- 历史记录弹窗抽屉 -->
+    <!-- History Drawer Modal -->
     <div class="modal-overlay" id="history-modal">
         <div class="modal-sheet">
             <div class="modal-header">
@@ -717,16 +746,21 @@
                 <button class="modal-close" id="close-history-btn">&times;</button>
             </div>
             <div class="history-list" id="history-list">
-                <!-- 历史项 -->
+                <!-- Populated dynamically from localStorage -->
             </div>
         </div>
     </div>
 
-    <!-- 消息提示 Toast -->
+    <!-- Floating Toast Feedback -->
     <div id="toast"></div>
 
     <script>
-        // ================= 国际化字典 (i18n Dictionary) =================
+        /**
+         * =========================================================================
+         * Module 1: Internationalization (i18n) Dictionary
+         * Provides bilingual translations (Chinese / English) for all UI components.
+         * =========================================================================
+         */
         const i18nData = {
             zh: {
                 app_title: "Mobile LaTeX",
@@ -812,7 +846,13 @@
             }
         };
 
-        // ================= 符号键盘数据库 (Keypad Symbols Database) =================
+        /**
+         * =========================================================================
+         * Module 2: Keypad Symbols Database
+         * Symbols grouped by mathematical categories.
+         * Uses $1, $2, $3 placeholders for smart cursor positioning.
+         * =========================================================================
+         */
         const symbolCategories = {
             common: [
                 { display: "\\frac{a}{b}", snippet: "\\frac{$1}{$2}" },
@@ -898,17 +938,21 @@
             ]
         };
 
-        // ================= 状态管理 (State Management) =================
-        const STORAGE_KEY_CONTENT = 'mobile_latex_cached_content';
-        const STORAGE_KEY_LANG = 'mobile_latex_lang';
-        const STORAGE_KEY_HISTORY = 'mobile_latex_history';
+        /**
+         * =========================================================================
+         * Module 3: Application State & LocalStorage Keys
+         * =========================================================================
+         */
+        const STORAGE_KEY_CONTENT = 'mobile_latex_cached_content'; // Auto-saved draft
+        const STORAGE_KEY_LANG = 'mobile_latex_lang';             // User language preference
+        const STORAGE_KEY_HISTORY = 'mobile_latex_history';       // 15-item history queue
 
         let currentLang = 'en';
         let currentCategory = 'common';
         let previewZoomLevel = 1.35;
-        let undoStack = [];
+        let undoStack = []; // Undo stack for mobile typing rollback
 
-        // DOM 元素引用
+        // Cached DOM Elements
         const input = document.getElementById('latex-input');
         const previewContent = document.getElementById('preview-content');
         const previewCard = document.getElementById('preview-card');
@@ -923,12 +967,18 @@
         const historyModal = document.getElementById('history-modal');
         const historyList = document.getElementById('history-list');
 
-        // ================= 语言初始化与更新 =================
+        /**
+         * =========================================================================
+         * Module 4: Internationalization Engine
+         * Detects system language and updates all UI strings and templates.
+         * =========================================================================
+         */
         function initLanguage() {
             const savedLang = localStorage.getItem(STORAGE_KEY_LANG);
             if (savedLang) {
                 currentLang = savedLang;
             } else {
+                // Auto-detect browser/system language
                 const sysLang = navigator.language || (navigator.languages && navigator.languages[0]) || 'en';
                 currentLang = sysLang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
             }
@@ -946,13 +996,13 @@
             document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
             langLabel.textContent = t.lang_toggle;
 
-            // 批量更新 data-i18n
+            // Batch update all data-i18n text nodes
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 if (t[key]) el.textContent = t[key];
             });
 
-            // 批量更新 placeholder
+            // Batch update all placeholder attributes
             document.querySelectorAll('[data-i18n-ph]').forEach(el => {
                 const key = el.dataset.i18nPh;
                 if (t[key]) el.setAttribute('placeholder', t[key]);
@@ -964,7 +1014,12 @@
             renderLatex();
         }
 
-        // ================= 渲染组件 =================
+        /**
+         * =========================================================================
+         * Module 5: Component Renderers
+         * Dynamically generates templates, AI prompt chips, and symbol buttons.
+         * =========================================================================
+         */
         function renderTemplates() {
             const t = i18nData[currentLang];
             templateBar.innerHTML = '';
@@ -973,7 +1028,7 @@
                 btn.className = 'pill-template';
                 btn.innerHTML = `<span>✨</span><span>${item.name}</span>`;
                 btn.addEventListener('click', () => {
-                    saveHistory(input.value);
+                    saveHistory(input.value); // Archive previous formula to history
                     input.value = item.code;
                     renderLatex();
                     showToast(t.toast_loaded_template);
@@ -995,6 +1050,7 @@
                         showToast(t.toast_empty);
                         return;
                     }
+                    // Wrap formula with the selected AI prompt
                     const fullPrompt = `${prompt.prefix}${val}${prompt.suffix}`;
                     copyToClipboard(fullPrompt, t.toast_copied_ai);
                 });
@@ -1016,12 +1072,17 @@
             });
         }
 
-        // ================= KaTeX 渲染引擎 =================
+        /**
+         * =========================================================================
+         * Module 6: KaTeX Real-time Math Rendering Engine
+         * Renders LaTeX in display mode with robust error catching.
+         * =========================================================================
+         */
         function renderLatex() {
             const val = input.value.trim();
             const t = i18nData[currentLang];
 
-            // 本地缓存
+            // Auto-persist draft to localStorage
             localStorage.setItem(STORAGE_KEY_CONTENT, input.value);
 
             if (!val) {
@@ -1049,13 +1110,19 @@
             }
         }
 
-        // ================= 智能输入与光标定位 =================
+        /**
+         * =========================================================================
+         * Module 7: Smart Snippet Insertion & Cursor Repositioning
+         * Handles insertion at selection and moves cursor directly inside {}.
+         * =========================================================================
+         */
         function insertSnippet(snippet) {
             pushUndoState();
             const start = input.selectionStart;
             const end = input.selectionEnd;
             const text = input.value;
 
+            // Locate $1 placeholder for smart cursor placement
             const firstPos = snippet.indexOf('$1');
             const processed = snippet.replace(/\$1/g, '').replace(/\$2/g, '').replace(/\$3/g, '').replace(/\$4/g, '');
 
@@ -1080,7 +1147,12 @@
             }
         }
 
-        // ================= 剪贴板与 Toast =================
+        /**
+         * =========================================================================
+         * Module 8: Clipboard API & Non-blocking Toast Feedback
+         * Includes fallback execCommand mechanism for older mobile webviews.
+         * =========================================================================
+         */
         function showToast(msg) {
             toast.textContent = msg;
             toast.classList.add('show');
@@ -1101,6 +1173,7 @@
                 if (navigator.clipboard && window.isSecureContext) {
                     await navigator.clipboard.writeText(text);
                 } else {
+                    // Fallback for non-HTTPS or embedded webview contexts
                     const textarea = document.createElement('textarea');
                     textarea.value = text;
                     textarea.style.position = 'fixed';
@@ -1117,13 +1190,18 @@
             }
         }
 
-        // ================= 历史记录持久化 =================
+        /**
+         * =========================================================================
+         * Module 9: History Storage & FIFO Queue
+         * Keeps up to 15 recent formulas with deduplication in localStorage.
+         * =========================================================================
+         */
         function saveHistory(code) {
             if (!code || !code.trim()) return;
             let history = JSON.parse(localStorage.getItem(STORAGE_KEY_HISTORY) || '[]');
-            history = history.filter(item => item !== code);
-            history.unshift(code);
-            if (history.length > 15) history.pop();
+            history = history.filter(item => item !== code); // Deduplicate
+            history.unshift(code); // Push to the top (most recent)
+            if (history.length > 15) history.pop(); // Cap at 15 items
             localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(history));
         }
 
@@ -1151,25 +1229,29 @@
             });
         }
 
-        // ================= 事件绑定 =================
+        /**
+         * =========================================================================
+         * Module 10: Event Bindings & Initialization
+         * =========================================================================
+         */
         document.addEventListener('DOMContentLoaded', () => {
             initLanguage();
 
-            // 恢复上次编辑内容
+            // Restore cached draft from previous session
             const cached = localStorage.getItem(STORAGE_KEY_CONTENT);
             if (cached) {
                 input.value = cached;
             }
 
-            // 监听输入
+            // Real-time typing listener
             input.addEventListener('input', () => {
                 renderLatex();
             });
 
-            // 切换语言
+            // Language switch event
             langBtn.addEventListener('click', toggleLanguage);
 
-            // 分类 Tab 点击
+            // Tab switching for symbol keypad
             categoryTabs.addEventListener('click', (e) => {
                 const tab = e.target.closest('.tab-btn');
                 if (tab && tab.dataset.cat) {
@@ -1180,7 +1262,7 @@
                 }
             });
 
-            // 光标与快捷操作栏
+            // Mobile cursor controllers
             document.getElementById('btn-cursor-left').addEventListener('click', () => {
                 const pos = Math.max(0, input.selectionStart - 1);
                 input.focus();
@@ -1219,7 +1301,7 @@
                 renderLatex();
             });
 
-            // 底部主按钮
+            // Bottom action buttons
             document.getElementById('btn-copy-latex').addEventListener('click', () => {
                 const t = i18nData[currentLang];
                 copyToClipboard(input.value, t.toast_copied_latex);
@@ -1238,7 +1320,7 @@
             document.getElementById('btn-clear').addEventListener('click', () => {
                 const t = i18nData[currentLang];
                 if (input.value.trim()) {
-                    saveHistory(input.value.trim());
+                    saveHistory(input.value.trim()); // Backup before clearing
                     pushUndoState();
                     input.value = '';
                     renderLatex();
@@ -1246,7 +1328,7 @@
                 }
             });
 
-            // 预览放大/缩小/重置
+            // Preview zoom controls
             document.getElementById('zoom-in').addEventListener('click', () => {
                 previewZoomLevel = Math.min(2.5, previewZoomLevel + 0.2);
                 document.documentElement.style.setProperty('--preview-font-size', `${previewZoomLevel}rem`);
@@ -1262,7 +1344,7 @@
                 document.documentElement.style.setProperty('--preview-font-size', '1.35rem');
             });
 
-            // 历史记录模态框
+            // History modal triggers
             document.getElementById('open-history-btn').addEventListener('click', () => {
                 renderHistoryList();
                 historyModal.classList.add('open');
@@ -1278,7 +1360,7 @@
                 }
             });
 
-            // 等待 KaTeX 载入完成后渲染
+            // Polling check for KaTeX script initialization
             const timer = setInterval(() => {
                 if (window.katex) {
                     clearInterval(timer);
