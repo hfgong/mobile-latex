@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.25" />
+    </filter>
+  </defs>
+  
+  <!-- Rounded App Icon Background -->
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#bgGrad)" />
+  
+  <!-- Stylized Math Sum / Integral Graphic -->
+  <g fill="#ffffff" filter="url(#dropShadow)">
+    <!-- Sigma / Math Symbol -->
+    <path d="M 36 34 L 92 34 L 92 44 L 58 44 L 76 64 L 58 84 L 92 84 L 92 94 L 36 94 L 36 84 L 60 64 L 36 44 Z" />
+    <!-- Square root accent dot / dx -->
+    <circle cx="94" cy="38" r="4" fill="#93c5fd" />
+    <circle cx="94" cy="90" r="4" fill="#93c5fd" />
+  </g>
+</svg>
