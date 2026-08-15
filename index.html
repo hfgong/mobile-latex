@@ -121,10 +121,27 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-primary);
+        }
+
+        .brand-logo {
+            width: 26px;
+            height: 26px;
+            border-radius: 7px;
+            background: linear-gradient(135deg, #4338ca 0%, #2563eb 50%, #0284c7 100%);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 800;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            box-shadow: 0 2px 5px rgba(37, 99, 235, 0.3);
+            flex-shrink: 0;
+            user-select: none;
         }
 
         .header-actions {
@@ -639,7 +656,7 @@
     <!-- Top Navigation Header -->
     <header>
         <div class="brand">
-            <span>📐</span>
+            <span class="brand-logo">∑</span>
             <span id="app-title">Mobile LaTeX</span>
         </div>
         <div class="header-actions">
