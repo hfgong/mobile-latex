@@ -463,11 +463,25 @@
             box-shadow: var(--shadow-sm);
         }
 
-        .btn-danger {
-            width: 44px;
+        .btn-new {
             background: var(--surface-color);
-            color: var(--danger-color);
+            color: var(--text-primary);
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            padding: 0 10px;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-new:active {
+            background: var(--surface-active);
+            color: var(--primary-color);
+        }
+
+        .btn-new svg {
+            color: var(--primary-color);
         }
 
         /* Split Button Group for Copy LaTeX & AI Prompt Dropdown */
@@ -796,7 +810,13 @@
 
     <!-- Primary Action Controls with Compact Split Dropdown -->
     <div class="primary-actions">
-        <button class="btn-action btn-danger" id="btn-clear" title="Clear">🗑</button>
+        <button class="btn-action btn-new" id="btn-clear" title="新建公式 / New">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span data-i18n="btn_new">新建</span>
+        </button>
         <button class="btn-action btn-secondary" id="btn-copy-md" data-i18n="btn_copy_md">
             复制 $$...$$
         </button>
@@ -865,14 +885,14 @@
                 input_placeholder: "在此输入 LaTeX 公式代码...",
                 btn_copy_md: "复制 $$...$$",
                 btn_copy_raw: "复制 LaTeX",
-                btn_clear: "清空",
+                btn_new: "新建",
                 ai_dropdown_title: "AI 提问快捷包装",
                 history_modal_title: "最近公式历史",
                 history_empty: "暂无历史记录",
                 toast_copied_latex: "已复制 LaTeX 源码",
                 toast_copied_md: "已复制 Markdown 公式 ($$...$$)",
                 toast_copied_ai: "已复制并包装 AI 提示词",
-                toast_cleared: "已清空",
+                toast_cleared: "已创建新公式",
                 toast_loaded_template: "已载入公式模板",
                 toast_empty: "内容为空，无需复制",
                 toast_copy_fail: "复制失败，请长按文本复制",
@@ -906,14 +926,14 @@
                 input_placeholder: "Type LaTeX formula code here...",
                 btn_copy_md: "Copy $$...$$",
                 btn_copy_raw: "Copy LaTeX",
-                btn_clear: "Clear",
+                btn_new: "New",
                 ai_dropdown_title: "Package with AI Prompt",
                 history_modal_title: "Recent Formulas",
                 history_empty: "No history yet",
                 toast_copied_latex: "Copied LaTeX source",
                 toast_copied_md: "Copied Markdown ($$...$$)",
                 toast_copied_ai: "Copied with AI prompt",
-                toast_cleared: "Cleared",
+                toast_cleared: "New formula started",
                 toast_loaded_template: "Template loaded",
                 toast_empty: "Empty formula, nothing to copy",
                 toast_copy_fail: "Copy failed, please select and copy manually",
@@ -947,6 +967,9 @@
                 { display: "xⁿ", snippet: "^{$1}" },
                 { display: "xₙ", snippet: "_{$1}" },
                 { display: "\\sqrt{}", snippet: "\\sqrt{$1}" },
+                { display: "\\sin", snippet: "\\sin($1)" },
+                { display: "\\cos", snippet: "\\cos($1)" },
+                { display: "\\\\", snippet: " \\\\\n$1" },
                 { display: "\\pm", snippet: "\\pm " },
                 { display: "\\times", snippet: "\\times " },
                 { display: "\\div", snippet: "\\div " },
