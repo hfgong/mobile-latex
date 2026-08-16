@@ -464,20 +464,21 @@
         }
 
         .btn-new {
+            width: 44px;
             background: var(--surface-color);
-            color: var(--text-primary);
+            color: var(--primary-color);
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
-            padding: 0 10px;
-            font-size: 0.88rem;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            flex-shrink: 0;
+            padding: 0;
         }
 
         .btn-new:active {
             background: var(--surface-active);
-            color: var(--primary-color);
+            transform: scale(0.94);
         }
 
         .btn-new svg {
@@ -810,12 +811,11 @@
 
     <!-- Primary Action Controls with Compact Split Dropdown -->
     <div class="primary-actions">
-        <button class="btn-action btn-new" id="btn-clear" title="新建公式 / New">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <button class="btn-action btn-new" id="btn-clear" title="新建公式 / New" aria-label="New Formula">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
-            <span data-i18n="btn_new">新建</span>
         </button>
         <button class="btn-action btn-secondary" id="btn-copy-md" data-i18n="btn_copy_md">
             复制 $$...$$
